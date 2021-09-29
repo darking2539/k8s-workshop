@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: productpage-app
+  namespace: bookinfo-dev
+spec:
+  dnsNames:
+    - dev.bookinfo.abosszz.com
+  secretName: productpage-app-tls
+  issuerRef:
+    name: letsencrypt-cluster-issuer
+    kind: ClusterIssuer

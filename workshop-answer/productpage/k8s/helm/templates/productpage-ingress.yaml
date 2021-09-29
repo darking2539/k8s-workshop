@@ -1,0 +1,45 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+  name: bookinfo-dev-productpage
+  namespace: bookinfo-dev
+spec:
+  tls:
+  - hosts:
+    - dev.bookinfo.abosszz.com
+    secretName: productpage-app-tls
+  rules:
+  - host: dev.bookinfo.abosszz.com
+    http:
+      paths:
+      - path: "/productpage(/|$)(.*)"
+        pathType: Prefix
+        backend:
+          service:
+            name: bookinfo-dev-productpage
+            port:
+              number: 9080
+      - path: "/ratings(/|$)(.*)"
+        pathType: Prefix
+        backend:
+          service:
+            name: bookinfo-dev-ratings
+            port:
+              number: 9080
+      - path: "/details(/|$)(.*)"
+        pathType: Prefix
+        backend:
+          service:
+            name: bookinfo-dev-details
+            port:
+              number: 9080
+      - path: "/reviews(/|$)(.*)"
+        pathType: Prefix
+        backend:
+          service:
+            name: bookinfo-dev-reviews
+            port:
+              number: 9080

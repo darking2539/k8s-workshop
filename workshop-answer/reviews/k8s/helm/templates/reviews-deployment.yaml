@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bookinfo-dev-reviews
+  namespace: bookinfo-dev
+  labels:
+    app: bookinfo-dev-reviews
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bookinfo-dev-reviews
+  template:
+    metadata:
+      labels:
+        app: bookinfo-dev-reviews
+    spec:
+      containers:
+      - name: bookinfo-dev-reviews
+        image: asia.gcr.io/river-howl-327208/bookinfo-reviews:dev
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9080
+          name: web-port
+          protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 9080
+            scheme: HTTP
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 9080
+            scheme: HTTP
+        env:
+        - name: ENABLE_RATINGS
+          value: 'true'
+        - name: RATINGS_SERVICE
+          value: "https://dev.bookinfo.abosszz.com/ratings"
+        - name: STAR_COLOR
+          value: "YELLOW"
+      imagePullSecrets:
+      - name: registry-bookinfo
